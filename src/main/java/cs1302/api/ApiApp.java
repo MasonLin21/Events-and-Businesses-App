@@ -127,7 +127,7 @@ public class ApiApp extends Application {
             String responseBody = response.body();
             SeatGeekResponse sgResponse = GSON
                 .<SeatGeekResponse>fromJson(responseBody, SeatGeekResponse.class);
-            String eventStuff = "Event: " + sgResponse.events[0].venue.name +
+            String eventStuff = "Top Event: " + sgResponse.events[0].venue.name +
                 "\n" + "Url: " + sgResponse.events[0].venue.url;
             eventInfo.setText(eventStuff);
             yelp(YELP_URL);
@@ -145,7 +145,11 @@ public class ApiApp extends Application {
                 .build();
             HttpResponse<String> response =  HTTP_CLIENT.send(request, BodyHandlers.ofString());
             String responseBody = response.body();
-            System.out.println(responseBody);
+            YelpResponse yelpResponse = GSON
+                .<YelpResponse>fromJson(responseBody, YelpResponse.class);
+            System.out.println(yelpResponse.businesses[0].name);
+            System.out.println(yelpResponse.businesses[0].url);
+
         } catch (Exception e) {
             System.out.println(e.toString());
         }
