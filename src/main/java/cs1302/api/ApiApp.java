@@ -42,13 +42,16 @@ public class ApiApp extends Application {
     VBox root;
     HBox topBox;
     HBox eventInfoBox;
+    HBox nearRestBox;
     Text searchText;
     TextField searchField;
     Button getEventsButton;
+    Text nearRestText;
     EventHandler<ActionEvent> gEventsButton;
     private static final String DEFAULT_URL = "https://api.seatgeek.com/2/events?venue.city=";
-    private static final String YELP_URL = "https://api.yelp.com/v3/businesses/search?latitude=37.786882&longitude=-122.399972" +
-        "&categories=restaurants";
+    private static final String YELP_URL = "https://api.yelp.com/v3/businesses/search?";
+//    private static final String YELP_URL = "https://api.yelp.com/v3/businesses/search?latitude=37.786882&longitude=-122.399972" +
+    //     "&categories=restaurants";
 
     Text eventInfo;
 
@@ -72,13 +75,15 @@ public class ApiApp extends Application {
      * constructor is executed in Step 2 of the JavaFX Application Life-Cycle.
      */
     public ApiApp() {
-        root = new VBox(5);
+        root = new VBox(10);
         topBox = new HBox(10);
         searchText = new Text("Search for events near a city");
         searchField = new TextField("Enter a city");
         getEventsButton = new Button("Get Events");
         eventInfo = new Text("Events will appear here");
         eventInfoBox = new HBox(10);
+        nearRestBox = new HBox(10);
+        nearRestText = new Text("Nearby businesses and restaurants");
     } // ApiApp
 
 
@@ -87,15 +92,15 @@ public class ApiApp extends Application {
     public void start(Stage stage) {
 
         this.stage = stage;
-        root.setPrefSize(600, 500);
+        root.setPrefSize(600, 300);
         searchField.setPrefWidth(300);
         topBox.getChildren().addAll(searchText, searchField, getEventsButton);
         setButton();
 //        eventInfo.setFont(new Font(24));
         eventInfoBox.getChildren().addAll(eventInfo);
+        nearRestBox.getChildren().addAll(nearRestText);
 
-
-        root.getChildren().addAll(topBox, eventInfoBox);
+        root.getChildren().addAll(topBox, eventInfoBox, nearRestBox);
         scene = new Scene(root);
 
         // setup stage
@@ -111,10 +116,10 @@ public class ApiApp extends Application {
         gEventsButton = (ActionEvent e) -> {
             String city =  searchField.getText();
             String newCity = URLEncoder.encode(city, StandardCharsets.UTF_8);
-            System.out.println(newCity);
+
             String uri = DEFAULT_URL + newCity + "&client_id=" + apiKey(0);
             seatGeek(uri);
-            System.out.println(uri);
+
 
         };
         getEventsButton.setOnAction(gEventsButton);
@@ -130,9 +135,17 @@ public class ApiApp extends Application {
             String eventStuff = "Top Event: " + sgResponse.events[0].venue.name +
                 "\n" + "Url: " + sgResponse.events[0].venue.url;
             eventInfo.setText(eventStuff);
-            yelp(YELP_URL);
+
+
+            String query = String.format("latitude=%s&longitude=%s",
+                sgResponse.events[0].venue.location.lat
+                ,sgResponse.events[0].venue.location.lon);
+            String fullQuery = YELP_URL + query +  "&categories=restaurants";
+
+            yelp(fullQuery);
         } catch (Exception e) {
-            System.out.println(e.toString());
+            eventInfo.setText("Not valid city. Try Again");
+            nearRestText.setText("");
         }
 
     }
@@ -147,11 +160,12 @@ public class ApiApp extends Application {
             String responseBody = response.body();
             YelpResponse yelpResponse = GSON
                 .<YelpResponse>fromJson(responseBody, YelpResponse.class);
-            System.out.println(yelpResponse.businesses[0].name);
-            System.out.println(yelpResponse.businesses[0].url);
-
+            String nearRestString = "Here is a nearby business/restaurant close to your event" +
+                "\n Business/resturant: " + yelpResponse.businesses[0].name +
+                "\n URL: " + yelpResponse.businesses[0].url;
+            nearRestText.setText(nearRestString);
         } catch (Exception e) {
-            System.out.println(e.toString());
+            nearRestText.setText("No nearby restaurants");
         }
 
     }
