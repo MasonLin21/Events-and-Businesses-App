@@ -34,7 +34,10 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpRequest;
 
 /**
- * REPLACE WITH NON-SHOUTING DESCRIPTION OF YOUR APP.
+ * This app takes a city from the user and finds the nearest event
+ * to the city using the SeatGeek ApI and then find the nearest
+ * business/resturant close to that event using the Yelp Api with the long and lat of
+ * that event (resourced from the SeatGeek Api.
  */
 public class ApiApp extends Application {
     Stage stage;
@@ -47,13 +50,10 @@ public class ApiApp extends Application {
     TextField searchField;
     Button getEventsButton;
     Text nearRestText;
+    Text eventInfo;
     EventHandler<ActionEvent> gEventsButton;
     private static final String DEFAULT_URL = "https://api.seatgeek.com/2/events?venue.city=";
     private static final String YELP_URL = "https://api.yelp.com/v3/businesses/search?";
-//    private static final String YELP_URL = "https://api.yelp.com/v3/businesses/search?latitude=37.786882&longitude=-122.399972" +
-    //     "&categories=restaurants";
-
-    Text eventInfo;
 
 
 
@@ -96,7 +96,6 @@ public class ApiApp extends Application {
         searchField.setPrefWidth(300);
         topBox.getChildren().addAll(searchText, searchField, getEventsButton);
         setButton();
-//        eventInfo.setFont(new Font(24));
         eventInfoBox.getChildren().addAll(eventInfo);
         nearRestBox.getChildren().addAll(nearRestText);
 
@@ -112,6 +111,10 @@ public class ApiApp extends Application {
 
     } // start
 
+    /**
+     * Initializes the button to receive events and nearby things.
+     */
+
     public void setButton() {
         gEventsButton = (ActionEvent e) -> {
             String city =  searchField.getText();
@@ -124,6 +127,13 @@ public class ApiApp extends Application {
         };
         getEventsButton.setOnAction(gEventsButton);
     }
+
+    /**
+     * Uses the SeatGeek api to find the nearest event and its long and lat from a user
+     * inputted city.
+     * @param uri
+     */
+
     public void seatGeek(String uri) {
         try {
             URI link = URI.create(uri);
@@ -149,6 +159,13 @@ public class ApiApp extends Application {
         }
 
     }
+
+    /**
+     * Uses the long and lat of the event (sourced from the SeatGeek Api) and
+     * finds the closest resturant to that event.
+     * @param uri
+     */
+
     public void yelp(String uri) {
         try {
             URI link = URI.create(uri);
@@ -169,6 +186,13 @@ public class ApiApp extends Application {
         }
 
     }
+
+    /**
+     * Returns one of the two api keys.
+     * @param a
+     * @return String
+     */
+
     public String apiKey(int a) {
 
         String configPath = "resources/config.properties";
