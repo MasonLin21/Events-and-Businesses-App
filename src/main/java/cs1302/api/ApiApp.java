@@ -1,5 +1,6 @@
 package cs1302.api;
 
+import javafx.scene.text.Font;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Label;
@@ -40,11 +41,18 @@ public class ApiApp extends Application {
     Scene scene;
     VBox root;
     HBox topBox;
+    HBox eventInfoBox;
     Text searchText;
     TextField searchField;
     Button getEventsButton;
     EventHandler<ActionEvent> gEventsButton;
     private static final String DEFAULT_URL = "https://api.seatgeek.com/2/events?venue.city=";
+    private static final String YELP_URL = "https://api.yelp.com/v3/businesses/search?latitude=37.786882&longitude=-122.399972" +
+        "&categories=restaurants";
+
+    Text eventInfo;
+
+
 
     /** HTTP client. */
     public static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
@@ -64,11 +72,13 @@ public class ApiApp extends Application {
      * constructor is executed in Step 2 of the JavaFX Application Life-Cycle.
      */
     public ApiApp() {
-        root = new VBox();
+        root = new VBox(5);
         topBox = new HBox(10);
         searchText = new Text("Search for events near a city");
         searchField = new TextField("Enter a city");
         getEventsButton = new Button("Get Events");
+        eventInfo = new Text("Events will appear here");
+        eventInfoBox = new HBox(10);
     } // ApiApp
 
 
@@ -77,10 +87,15 @@ public class ApiApp extends Application {
     public void start(Stage stage) {
 
         this.stage = stage;
+        root.setPrefSize(600, 500);
         searchField.setPrefWidth(300);
         topBox.getChildren().addAll(searchText, searchField, getEventsButton);
         setButton();
-        root.getChildren().addAll(topBox);
+//        eventInfo.setFont(new Font(24));
+        eventInfoBox.getChildren().addAll(eventInfo);
+
+
+        root.getChildren().addAll(topBox, eventInfoBox);
         scene = new Scene(root);
 
         // setup stage
@@ -112,10 +127,25 @@ public class ApiApp extends Application {
             String responseBody = response.body();
             SeatGeekResponse sgResponse = GSON
                 .<SeatGeekResponse>fromJson(responseBody, SeatGeekResponse.class);
-            for (int i = 0; i < sgResponse.events.length; i++) {
-                System.out.println(sgResponse.events[i].venue.location.lon);
-                System.out.println(sgResponse.events[i].venue.url);
-            }
+            String eventStuff = "Event: " + sgResponse.events[0].venue.name +
+                "\n" + "Url: " + sgResponse.events[0].venue.url;
+            eventInfo.setText(eventStuff);
+            yelp(YELP_URL);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+    }
+    public void yelp(String uri) {
+        try {
+            URI link = URI.create(uri);
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(link)
+                .header("Authorization", "Bearer " + apiKey(1))
+                .build();
+            HttpResponse<String> response =  HTTP_CLIENT.send(request, BodyHandlers.ofString());
+            String responseBody = response.body();
+            System.out.println(responseBody);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -133,6 +163,9 @@ public class ApiApp extends Application {
 
             if (a == 0) {
                 String apiKey = config.getProperty("ClientId");
+                return apiKey;
+            } else if (a == 1) {
+                String apiKey = config.getProperty("ApiKeyYelp");
                 return apiKey;
             }
         } catch (IOException ioe) {
