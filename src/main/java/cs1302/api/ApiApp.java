@@ -99,7 +99,7 @@ public class ApiApp extends Application {
             System.out.println(newCity);
             String uri = DEFAULT_URL + newCity + "&client_id=" + apiKey(0);
             seatGeek(uri);
-
+            System.out.println(uri);
 
         };
         getEventsButton.setOnAction(gEventsButton);
@@ -113,7 +113,8 @@ public class ApiApp extends Application {
             SeatGeekResponse sgResponse = GSON
                 .<SeatGeekResponse>fromJson(responseBody, SeatGeekResponse.class);
             for (int i = 0; i < sgResponse.events.length; i++) {
-                System.out.println(sgResponse.events[i].name_v2);
+                System.out.println(sgResponse.events[i].venue.location.lon);
+                System.out.println(sgResponse.events[i].venue.url);
             }
         } catch (Exception e) {
             System.out.println(e.toString());
