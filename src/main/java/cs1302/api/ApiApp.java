@@ -26,7 +26,9 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.net.URLEncoder;
-
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.io.IOException;
 /**
  * REPLACE WITH NON-SHOUTING DESCRIPTION OF YOUR APP.
  */
@@ -78,8 +80,9 @@ public class ApiApp extends Application {
             String city =  searchField.getText();
             String newCity = URLEncoder.encode(city, StandardCharsets.UTF_8);
             System.out.println(newCity);
-            String uri = DEFAULT_URL + newCity + "&client_id=MzM1MTU1MzJ8MTY4MzQyNzk1NS4zNDQ1MTA4";
+            String uri = DEFAULT_URL + newCity + "&client_id=" + apiKey(0);
             System.out.println(uri);
+
 
         };
         getEventsButton.setOnAction(gEventsButton);
@@ -89,6 +92,23 @@ public class ApiApp extends Application {
     }
     public String apiKey(int a) {
 
+        String configPath = "resources/config.properties";
+
+        // the following try-statement is called a try-with-resources statement
+        // see https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
+        try (FileInputStream configFileStream = new FileInputStream(configPath)) {
+            Properties config = new Properties();
+            config.load(configFileStream);
+
+            if (a == 0) {
+            String apiKey = config.getProperty("ClientId");
+            return apiKey;
+            }
+        } catch (IOException ioe) {
+            System.err.println(ioe);
+            ioe.printStackTrace();
+        } // try
+        return null;
 
 
     }
