@@ -29,6 +29,9 @@ import java.net.URLEncoder;
 import java.io.FileInputStream;
 import java.util.Properties;
 import java.io.IOException;
+import java.net.http.HttpResponse;
+import java.net.http.HttpRequest;
+
 /**
  * REPLACE WITH NON-SHOUTING DESCRIPTION OF YOUR APP.
  */
@@ -42,6 +45,20 @@ public class ApiApp extends Application {
     Button getEventsButton;
     EventHandler<ActionEvent> gEventsButton;
     private static final String DEFAULT_URL = "https://api.seatgeek.com/2/events?venue.city=";
+
+    /** HTTP client. */
+    public static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+        .version(HttpClient.Version.HTTP_2)           // uses HTTP protocol version 2 where possible
+        .followRedirects(HttpClient.Redirect.NORMAL)  // always redirects, except from HTTPS to HTTP
+        .build();                                     // builds and returns a HttpClient object
+
+    /** Google {@code Gson} object for parsing JSON-formatted strings. */
+    public static Gson GSON = new GsonBuilder()
+        .setPrettyPrinting()                          // enable nice output when printing
+        .create();                                    // builds and returns a Gson object
+
+
+
     /**
      * Constructs an {@code ApiApp} object. This default (i.e., no argument)
      * constructor is executed in Step 2 of the JavaFX Application Life-Cycle.
@@ -81,13 +98,26 @@ public class ApiApp extends Application {
             String newCity = URLEncoder.encode(city, StandardCharsets.UTF_8);
             System.out.println(newCity);
             String uri = DEFAULT_URL + newCity + "&client_id=" + apiKey(0);
-            System.out.println(uri);
+            seatGeek(uri);
 
 
         };
         getEventsButton.setOnAction(gEventsButton);
     }
-    public void seatGeek() {
+    public void seatGeek(String uri) {
+        try {
+            URI link = URI.create(uri);
+            HttpRequest request = HttpRequest.newBuilder().uri(link).build();
+            HttpResponse<String> response =  HTTP_CLIENT.send(request,BodyHandlers.ofString());
+            String responseBody = response.body();
+            SeatGeekResponse sgResponse = GSON
+                .<SeatGeekResponse>fromJson(responseBody, SeatGeekResponse.class);
+            for (int i = 0; i < sgResponse.events.length; i++) {
+                System.out.println(sgResponse.events[i].name_v2);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
 
     }
     public String apiKey(int a) {
@@ -101,8 +131,8 @@ public class ApiApp extends Application {
             config.load(configFileStream);
 
             if (a == 0) {
-            String apiKey = config.getProperty("ClientId");
-            return apiKey;
+                String apiKey = config.getProperty("ClientId");
+                return apiKey;
             }
         } catch (IOException ioe) {
             System.err.println(ioe);
