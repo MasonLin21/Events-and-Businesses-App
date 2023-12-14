@@ -1,0 +1,123 @@
+cs1302-api:
+total 72
+-rw-r--r--. 1 myid  6662 May  6 23:43 APPENDIX_API.rst
+-rw-r--r--. 1 myid  4205 May  6 23:43 APPENDIX_GIT.rst
+drwxr-xr-x. 2 myid    25 May  7 04:35 meta
+-rw-r--r--. 1 myid  8370 May  6 23:43 pom.xml
+-rwxr-xr-x. 1 myid   105 May  6 23:43 prepare-merge.sh
+-rw-r--r--. 1 myid 26044 May  6 23:43 README.rst
+-rw-r--r--. 1 myid  4117 May  7 04:41 rec11981
+-rw-r--r--. 1 myid     0 May  7 04:41 rec12065
+drwxr-xr-x. 2 myid    82 May  7 04:35 resources
+-rwxr-xr-x. 1 myid   119 May  6 23:43 run.sh
+drwxr-xr-x. 4 myid    42 May  6 23:43 src
+drwxr-xr-x. 5 myid   104 May  7 04:36 target
+
+cs1302-api/meta:
+total 4
+-rw-r--r--. 1 myid 1533 May  7 04:35 DEADLINE.md
+
+cs1302-api/resources:
+total 2084
+-rw-r--r--. 1 myid     227 May  7 04:35 config.properties
+-rw-r--r--. 1 myid  582183 May  6 23:43 readme-banner.png
+-rw-r--r--. 1 myid 1540930 May  6 23:43 readme-newrepo.png
+
+cs1302-api/src:
+total 0
+drwxr-xr-x. 3 myid 26 May  6 23:43 main
+drwxr-xr-x. 3 myid 50 May  6 23:43 site
+
+cs1302-api/src/main:
+total 0
+drwxr-xr-x. 3 myid 56 May  6 23:43 java
+
+cs1302-api/src/main/java:
+total 4
+drwxr-xr-x. 3 myid  25 May  6 23:43 cs1302
+-rw-r--r--. 1 myid 373 May  6 23:43 module-info.java
+
+cs1302-api/src/main/java/cs1302:
+total 4
+drwxr-xr-x. 2 myid 4096 May  7 04:35 api
+
+cs1302-api/src/main/java/cs1302/api:
+total 48
+-rw-r--r--. 1 myid 7670 May  7 04:35 ApiApp.java
+-rw-r--r--. 1 myid 1285 May  6 23:43 ApiDriver.java
+-rw-r--r--. 1 myid  134 May  7 04:35 Business.java
+-rw-r--r--. 1 myid  104 May  7 04:35 Event.java
+-rw-r--r--. 1 myid  171 May  7 04:35 Location.java
+-rw-r--r--. 1 myid 4332 May  6 23:43 OpenLibrarySearchApi.java
+-rw-r--r--. 1 myid 1670 May  6 23:43 PropertiesExample.java
+-rw-r--r--. 1 myid  132 May  7 04:35 SeatGeekResponse.java
+-rw-r--r--. 1 myid  201 May  7 04:35 Venue.java
+-rw-r--r--. 1 myid  134 May  7 04:35 YelpResponse.java
+
+cs1302-api/src/site:
+total 4
+drwxr-xr-x. 2 myid  33 May  6 23:43 markdown
+-rw-r--r--. 1 myid 424 May  6 23:43 site.xml
+
+cs1302-api/src/site/markdown:
+total 4
+-rw-r--r--. 1 myid 133 May  6 23:43 index.md.vm
+
+cs1302-api/target:
+total 4
+drwxr-xr-x. 3 myid  121 May  7 04:36 classes
+drwxr-xr-x. 3 myid   33 May  7 04:36 generated-sources
+drwxr-xr-x. 3 myid   35 May  7 04:36 maven-status
+-rw-r--r--. 1 myid 1255 May  7 04:36 modulepath
+
+cs1302-api/target/classes:
+total 2088
+-rw-r--r--. 1 myid     227 May  7 04:36 config.properties
+drwxr-xr-x. 3 myid      17 May  7 04:36 cs1302
+-rw-r--r--. 1 myid     354 May  7 04:36 module-info.class
+-rw-r--r--. 1 myid  582183 May  7 04:36 readme-banner.png
+-rw-r--r--. 1 myid 1540930 May  7 04:36 readme-newrepo.png
+
+cs1302-api/target/classes/cs1302:
+total 4
+drwxr-xr-x. 2 myid 4096 May  7 04:36 api
+
+cs1302-api/target/classes/cs1302/api:
+total 60
+-rw-r--r--. 1 myid 9633 May  7 04:36 ApiApp.class
+-rw-r--r--. 1 myid 1503 May  7 04:36 ApiDriver.class
+-rw-r--r--. 1 myid  321 May  7 04:36 Business.class
+-rw-r--r--. 1 myid  299 May  7 04:36 Event.class
+-rw-r--r--. 1 myid  303 May  7 04:36 Location.class
+-rw-r--r--. 1 myid 5993 May  7 04:36 OpenLibrarySearchApi.class
+-rw-r--r--. 1 myid  493 May  7 04:36 OpenLibrarySearchApi$OpenLibraryDoc.class
+-rw-r--r--. 1 myid  617 May  7 04:36 OpenLibrarySearchApi$OpenLibraryResult.class
+-rw-r--r--. 1 myid 1680 May  7 04:36 PropertiesExample.class
+-rw-r--r--. 1 myid  334 May  7 04:36 SeatGeekResponse.class
+-rw-r--r--. 1 myid  355 May  7 04:36 Venue.class
+-rw-r--r--. 1 myid  329 May  7 04:36 YelpResponse.class
+
+cs1302-api/target/generated-sources:
+total 0
+drwxr-xr-x. 2 myid 10 May  7 04:36 annotations
+
+cs1302-api/target/generated-sources/annotations:
+total 0
+
+cs1302-api/target/maven-status:
+total 0
+drwxr-xr-x. 3 myid 29 May  7 04:36 maven-compiler-plugin
+
+cs1302-api/target/maven-status/maven-compiler-plugin:
+total 0
+drwxr-xr-x. 3 myid 37 May  7 04:36 compile
+
+cs1302-api/target/maven-status/maven-compiler-plugin/compile:
+total 0
+drwxr-xr-x. 2 myid 64 May  7 04:36 default-compile
+
+cs1302-api/target/maven-status/maven-compiler-plugin/compile/default-compile:
+total 8
+-rw-r--r--. 1 myid 413 May  7 04:36 createdFiles.lst
+-rw-r--r--. 1 myid 777 May  7 04:36 inputFiles.lst
+/home/myid/ml52687/cs1302-api:/home/myid/csci-1302

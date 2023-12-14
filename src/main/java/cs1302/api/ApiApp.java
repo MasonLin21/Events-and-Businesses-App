@@ -177,13 +177,29 @@ public class ApiApp extends Application {
             String responseBody = response.body();
             YelpResponse yelpResponse = GSON
                 .<YelpResponse>fromJson(responseBody, YelpResponse.class);
-            String nearRestString = "Here is a nearby business/restaurant close to your event" +
-                "\n Business/resturant: " + yelpResponse.businesses[0].name +
-                "\n URL: " + yelpResponse.businesses[0].url;
-            nearRestText.setText(nearRestString);
+
+            int numberOfRestaurantsToDisplay = Math.min(3, yelpResponse.businesses.length);
+
+            if (numberOfRestaurantsToDisplay > 0) {
+                StringBuilder nearRestString =
+                    new StringBuilder
+                    ("Here are the nearby businesses/restaurants close to your event:\n");
+
+                // Iterate over the available businesses in the array and concatenate their details
+                for (int i = 0; i < numberOfRestaurantsToDisplay; i++) {
+                    Business business = yelpResponse.businesses[i];
+                    nearRestString.append("\nBusiness/restaurant: ").append(business.name)
+                        .append("\nURL: ").append(business.url).append("\n");
+                }
+
+                nearRestText.setText(nearRestString.toString());
+            } else {
+                nearRestText.setText("No nearby restaurants found");
+            }
         } catch (Exception e) {
-            nearRestText.setText("No nearby restaurants");
+            nearRestText.setText("Error retrieving restaurant information");
         }
+
 
     }
 
